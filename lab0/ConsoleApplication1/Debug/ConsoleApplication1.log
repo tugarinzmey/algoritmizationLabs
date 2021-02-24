@@ -1,0 +1,4 @@
+﻿  Goods.cpp
+C:\Users\Mark\source\repos\ConsoleApplication1\ConsoleApplication1\Goods.cpp(105,33): warning C4390: ";": обнаружен пустой контролируемый оператор; это правильно?
+C:\Users\Mark\source\repos\ConsoleApplication1\ConsoleApplication1\Goods.cpp(122,32): warning C4390: ";": обнаружен пустой контролируемый оператор; это правильно?
+  ConsoleApplication1.vcxproj -> C:\Users\Mark\source\repos\ConsoleApplication1\Debug\ConsoleApplication1.exe
