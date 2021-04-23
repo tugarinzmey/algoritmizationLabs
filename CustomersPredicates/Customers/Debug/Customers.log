@@ -1,0 +1,3 @@
+﻿  main.cpp
+LINK : warning LNK4081: не хватает места на диске; компоновка выполняется не инкрементно
+  Customers.vcxproj -> C:\Users\Mark\source\repos\Customers\Debug\Customers.exe
