@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Users\basic\Desktop\algoritmizationLabs-main\CustomersPredicates\Customers\main.cpp(27,30): error C2660: Customers::find: функция не принимает 0 аргументов
+C:\Users\basic\Desktop\algoritmizationLabs-main\CustomersPredicates\Customers\Customer.h(157,15): message : см. объявление "Customers::find"

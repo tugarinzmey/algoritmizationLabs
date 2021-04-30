@@ -1,0 +1,187 @@
+#pragma once
+#include <functional>
+#include <iostream>
+#include "windows.h"
+#include <conio.h>
+#include <string>
+using namespace std;
+class Customer
+{
+public:
+    // get set
+    string getName() { return this->name; }
+    void setName(string name) { this->name = name; }
+    string getAdress() { return this->adress; }
+    void setAdress(string adress) { this->adress = adress; }
+    int getDiscount() { return this->discount; }
+    void setDiscount(int discount) { this->discount = discount; }
+
+    void Cus_show(void)
+    {
+        setlocale(LC_ALL, "rus");
+        cout << "ФИО: " << name << endl;
+        cout << "Адрес: " << adress << endl;
+        cout << "Скикда: " << discount << endl;
+
+    }
+
+    void Cus_in(void)
+    {
+        setlocale(LC_ALL, "rus");
+        cout << "Введите полное имя покупателя" << endl;
+        cin >> name;
+        setName(name);
+        cout << "Введите адрес покупателя" << endl;
+        cin >> adress;
+        setAdress(adress);
+        cout << "Введите скидку" << endl;
+        cin >> discount;
+        setDiscount(discount);
+    }
+
+    //конструктор без параметров
+    Customer()
+    {
+    }
+
+    //конструктор с параметрами
+    Customer(string _name, string _adress, int _discount)
+    {
+        this->name = _name;
+        this->adress = _adress;
+        this->discount = _discount;
+    }
+    //деструктор
+    ~Customer()
+    {
+    }
+
+    //перегрузка
+    friend bool operator==(Customer& first, Customer& second)
+    {
+        if (first.name == second.name && first.adress == second.adress && first.discount == second.discount)
+            return 1;
+
+        return 0;
+    }
+private:
+    string name;
+    string adress;
+    int discount;
+};
+
+
+bool DiscountEq(Customer& cus1) { int value = cus1.getDiscount(); return value == 10; };
+bool sort(Customer& cus1, Customer& cus2) { int v1 = cus1.getDiscount(); int v2 = cus2.getDiscount();  return(v1 > v2); }
+
+
+class Customers {
+public:
+    Customers(int countcustomers) {
+        this->fullCustomers = countcustomers;
+        customers = new Customer[countcustomers];
+    }
+    Customers() {}
+    //ввод
+    void add(string name, string adress, int discount) {
+        if (currentIndex < fullCustomers) {
+            customers[currentIndex] = Customer(name, adress, discount);
+            currentIndex++;
+            checkFullMass(currentIndex);
+        }
+        else
+            cout << "Слишком много покупателей" << endl;
+    }
+    //добавление
+    void add(Customer customer) {
+        if (currentIndex < fullCustomers) {
+            customers[currentIndex] = customer;
+            currentIndex++;
+            checkFullMass(currentIndex);
+        }
+        else
+            cout << "Слишком много покупателей" << endl;
+    }
+    //добавление с клавиатуры
+    void addKey()
+    {
+        if (currentIndex < fullCustomers)
+        {
+            customers[currentIndex].Cus_in();
+            currentIndex++;
+        }
+        else
+            cout << "Слишком много покупателей" << endl;
+    }
+    int counts() {
+        return this->currentIndex;
+    }
+
+    void display() {
+        for (int i = 0; i < currentIndex; i++) {
+            customers[i].Cus_show();
+        }
+        cout << "--------------------------------" << endl;
+    }
+    Customer& operator [](int index) {
+        return  customers[index];
+    }
+
+    void sortedDisplay() {
+        for (int i = 1; i < currentIndex+1; i++) {
+            customers[i].Cus_show();
+        }
+        cout << "--------------------------------" << endl;
+    }
+    
+
+private:
+    Customer* customers;
+    int currentIndex = 0;
+    int fullCustomers;
+    void checkFullMass(int count) {
+        if (currentIndex == fullCustomers) {
+            cout << "Список покупателей заполнен!" << endl;
+
+        }
+    }
+public:
+    void remove(int atCustomer) {
+        for (int i = atCustomer; i < currentIndex - 1; i++) {
+            customers[i] = customers[i + 1];
+        }
+        currentIndex--;
+
+    }
+    //поиск
+    Customer* find(const function<bool(Customer&)>& predicate) {
+        for (int i = 0; i < currentIndex; i++)
+            if (predicate(customers[i]))
+                return &customers[i];
+        return NULL;
+    }
+    Customers* findAll(const function<bool(Customer&)>& predicate) {
+        static Customers findCustomers(currentIndex);
+        for (int i = 0; i < currentIndex; i++)
+            if (predicate(customers[i]))
+                findCustomers.add(customers[i]);
+        return findCustomers.counts() > 0 ? &findCustomers : NULL;
+    }
+    //сортировка
+    Customers& sorting(const function<bool(Customer&, Customer&)>& predicate) {
+        Customer temp;
+        static Customers sortCustomers;
+        sortCustomers = *this;
+        for (int i = 0; i < currentIndex; i++)
+            for (int j = 0; j < currentIndex; j++)
+                if (predicate(sortCustomers[j], sortCustomers[j + 1])) {
+                    temp = sortCustomers[j];
+                    sortCustomers[j] = sortCustomers[j + 1];
+                    sortCustomers[j + 1] = temp;
+                }
+        return sortCustomers;
+        
+    }
+};
+
+
